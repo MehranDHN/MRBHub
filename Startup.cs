@@ -9,6 +9,11 @@ using Piranha.AttributeBuilder;
 using Piranha.AspNetCore.Identity.SQLite;
 using Piranha.Data.EF.SQLite;
 using Piranha.Manager.Editor;
+using Piranha.Data.EF.SQLServer;
+using Piranha.AspNetCore.Identity.SQLServer;
+using System;
+using Microsoft.OpenApi.Models;
+using MRBHub.RealTime;
 
 namespace MRBHub
 {
@@ -29,6 +34,11 @@ namespace MRBHub
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "Manuscripts & Rare Books API", Version = "v1" });
+                options.CustomSchemaIds(x => x.FullName);
+            });
             // Service setup
             services.AddPiranha(options =>
             {
@@ -39,10 +49,36 @@ namespace MRBHub
                 options.UseManager();
                 options.UseTinyMCE();
                 options.UseMemoryCache();
-                options.UseEF<SQLiteDb>(db =>
-                    db.UseSqlite(_config.GetConnectionString("mrb")));
-                options.UseIdentityWithSeed<IdentitySQLiteDb>(db =>
-                    db.UseSqlite(_config.GetConnectionString("mrb")));
+                options.UseEF<SQLServerDb>(db =>
+                                db.UseSqlServer(_config.GetConnectionString("mrb")));
+                options.UseIdentity<IdentitySQLServerDb>(
+                    dbOptions: db => db.UseSqlServer(_config.GetConnectionString("mrb")),
+                    identityOptions: io =>
+                    {
+                        // Password settings
+                        io.Password.RequireDigit = false;
+                        io.Password.RequiredLength = 6;
+                        io.Password.RequireNonAlphanumeric = false;
+                        io.Password.RequireUppercase = false;
+                        io.Password.RequireLowercase = false;
+                        io.Password.RequiredUniqueChars = 1;
+
+                        // Lockout settings
+                        io.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                        io.Lockout.MaxFailedAccessAttempts = 10;
+                        io.Lockout.AllowedForNewUsers = true;
+
+                        // User settings
+                        io.User.RequireUniqueEmail = false;
+                    },
+                    cookieOptions: co =>
+                    {
+                        co.Cookie.HttpOnly = true;
+                        co.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                        co.LoginPath = "/manager/login";
+                        co.AccessDeniedPath = "/manager/login";
+                        co.SlidingExpiration = true;
+                    });
 
                 /***
                  * Here you can configure the different permissions
@@ -54,6 +90,8 @@ namespace MRBHub
                 });
                  */
             });
+
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,9 +101,19 @@ namespace MRBHub
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
 
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("http://37.156.28.208/cmsdemo/swagger/v1/swagger.json", "Manuscripts & Rare Books API V1");
+            });
             // Initialize Piranha
             App.Init(api);
+
+            App.MediaTypes.Images.Add(".svg", "image/svg+xml");
+            App.MediaTypes.Images.Add(".tif", "image/tiff");
 
             // Build content types
             new ContentTypeBuilder(api)
@@ -81,6 +129,12 @@ namespace MRBHub
                 options.UseManager();
                 options.UseTinyMCE();
                 options.UseIdentity();
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapHub<MRBSignalRHub>("/mrbsignalrhub");
             });
         }
     }

@@ -1,0 +1,49 @@
+﻿@font-face {
+    font-family: 'IRsans';
+    src: url('/assets/global/fonts/IRANSansLight.woff') format('woff'),url('/assets/global/fonts/IRANSansLight.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'IRsansb';
+    src: url('/assets/global/fonts/IRANSansMedium.woff') format('woff'),url('/assets/global/fonts/IRANSansMedium.ttf') format('truetype');
+    font-weight: bold;
+}
+body{
+    font-family:irsansb;
+}
+
+header .lead {
+    font-size: 1.35rem;
+    font-family: IRsansb;
+    direction: rtl;
+}
+
+.block {
+    padding: 0 0.3rem 1.5rem;
+    direction: rtl;
+    text-align: right;
+}
+
+    .block h2,h3{
+        font-family: IRsansb;
+        color:tomato;
+    }
+h1 {
+    font-family: IRsansb;
+}
+h4 {
+    font-family: IRsansb;
+}
+.card-body h5 {
+    font-family: IRsansb;
+    color: tomato;
+}
+.card-body a {
+    display:none;
+}
+p {
+    font-family: IRsansb;
+    direction:rtl;
+    text-align:right;
+}

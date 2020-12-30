@@ -9,6 +9,8 @@ using Piranha.Extend.Fields;
 using Piranha.Extend.Blocks;
 using Piranha.Models;
 using MRBHub.Models;
+using Microsoft.AspNetCore.Identity;
+using Piranha.AspNetCore.Identity.Data;
 
 namespace MRBHub.Controllers
 {
@@ -20,16 +22,39 @@ namespace MRBHub.Controllers
     public class SetupController : Controller
     {
         private readonly IApi _api;
+        private readonly UserManager<User> _userManager;
 
-        public SetupController(IApi api)
+        public SetupController(IApi api, UserManager<User> userManager)
         {
             _api = api;
+            _userManager = userManager;
         }
 
         [Route("/")]
         public IActionResult Index()
         {
             return View();
+        }
+
+        private async Task CreateUserAsync()
+        {
+            var user = new User
+            {
+                UserName = "admin",
+                Email = "admin@mrbcms.org",
+                SecurityStamp = Guid.NewGuid().ToString()
+            };
+            var existingUser = await _userManager.FindByNameAsync(user.UserName);
+            if (existingUser == null)
+            {
+                var createResult = await _userManager.CreateAsync(user, "password");
+
+                if (createResult.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "SysAdmin");
+                }
+            }
+
         }
 
         [Route("/seed")]
@@ -77,11 +102,11 @@ namespace MRBHub.Controllers
             docsPage.Id = Guid.NewGuid();
             docsPage.SiteId = site.Id;
             docsPage.SortOrder = 1;
-            docsPage.Title = "Read The Docs";
+            docsPage.Title = "More About IIIF";
             docsPage.NavigationTitle = "Docs";
             docsPage.MetaKeywords = "Purus, Amet, Ullamcorper, Fusce";
             docsPage.MetaDescription = "Integer posuere erat a ante venenatis dapibus posuere velit aliquet.";
-            docsPage.RedirectUrl = "https://piranhacms.org/docs";
+            docsPage.RedirectUrl = "https://iiif.io/";
             docsPage.RedirectType = RedirectType.Temporary;
             docsPage.PrimaryImage = images["man-in-red-jacket-standing-on-the-stairs-4390730.jpg"];
             docsPage.Excerpt = "Ready to get started! Then head over to our official documentation and learn more about Piranha and how to use it.";
@@ -292,6 +317,8 @@ namespace MRBHub.Controllers
                 IsApproved = true
             };
             await _api.Posts.SaveCommentAsync(post3.Id, comment);
+
+            await CreateUserAsync();
 
             return Redirect("~/");
         }
