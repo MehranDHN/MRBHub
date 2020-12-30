@@ -8,9 +8,9 @@ using MRBHub.Models.TEI.Walters;
 
 namespace MRBHub.Adapter
 {
-    public class AdapterEngine
+    public class AdapterEngine : IAdapterEngine
     {
-        static Task<WaltersTEIModel> WaltersParse(string targetUrl)
+        public Task<WaltersTEIModel> WaltersParse(string targetUrl)
         {
             var doc = new XmlDocument();
             doc.Load("https://www.thedigitalwalters.org/Data/WaltersManuscripts/ManuscriptDescriptions/W808_tei.xml");

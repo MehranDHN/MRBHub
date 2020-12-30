@@ -14,6 +14,7 @@ using Piranha.AspNetCore.Identity.SQLServer;
 using System;
 using Microsoft.OpenApi.Models;
 using MRBHub.RealTime;
+using MRBHub.Adapter;
 
 namespace MRBHub
 {
@@ -90,6 +91,8 @@ namespace MRBHub
                 });
                  */
             });
+
+            services.AddTransient<IAdapterEngine, AdapterEngine>();
 
             services.AddSignalR();
         }
