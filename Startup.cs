@@ -110,7 +110,7 @@ namespace MRBHub
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(options =>
             {
-                options.SwaggerEndpoint("http://37.156.28.208/cmsdemo/swagger/v1/swagger.json", "Manuscripts & Rare Books API V1");
+                options.SwaggerEndpoint("/mrbdemo/swagger/v1/swagger.json", "Manuscripts & Rare Books API V1");
             });
             // Initialize Piranha
             App.Init(api);
