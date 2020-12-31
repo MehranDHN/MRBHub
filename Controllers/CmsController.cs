@@ -5,6 +5,7 @@ using Piranha;
 using Piranha.AspNetCore.Services;
 using Piranha.Models;
 using MRBHub.Models;
+using MRBHub.Adapter;
 
 namespace MRBHub.Controllers
 {
@@ -13,15 +14,17 @@ namespace MRBHub.Controllers
     {
         private readonly IApi _api;
         private readonly IModelLoader _loader;
+        private readonly IAdapterEngine _adapterEngine;
 
         /// <summary>
         /// Default constructor.
         /// </summary>
         /// <param name="api">The current api</param>
-        public CmsController(IApi api, IModelLoader loader)
+        public CmsController(IApi api, IModelLoader loader, IAdapterEngine adapterEngine)
         {
             _api = api;
             _loader = loader;
+            _adapterEngine = adapterEngine;
         }
 
         /// <summary>
@@ -62,7 +65,8 @@ namespace MRBHub.Controllers
             try
             {
                 var model = await _loader.GetPageAsync<StandardPage>(id, HttpContext.User, draft);
-
+                model.EntryPoints = new System.Collections.Generic.List<Models.Common.EntryPoint>();
+                model.ItemInfo = await _adapterEngine.WaltersParse("http://Example.com/FakeURL");
                 return View(model);
             }
             catch (UnauthorizedAccessException)
