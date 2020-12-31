@@ -15,6 +15,7 @@ using System;
 using Microsoft.OpenApi.Models;
 using MRBHub.RealTime;
 using MRBHub.Adapter;
+using TehranEnergyApiClient.Web.Configuration;
 
 namespace MRBHub
 {
@@ -51,9 +52,9 @@ namespace MRBHub
                 options.UseTinyMCE();
                 options.UseMemoryCache();
                 options.UseEF<SQLServerDb>(db =>
-                                db.UseSqlServer(_config.GetConnectionString("mrb")));
+                                db.UseSqlServer(_config.GetConnectionString("mrbcms")));
                 options.UseIdentity<IdentitySQLServerDb>(
-                    dbOptions: db => db.UseSqlServer(_config.GetConnectionString("mrb")),
+                    dbOptions: db => db.UseSqlServer(_config.GetConnectionString("mrbcms")),
                     identityOptions: io =>
                     {
                         // Password settings
@@ -91,6 +92,8 @@ namespace MRBHub
                 });
                  */
             });
+
+            services.AddInternalDBConfiguration(_config);
 
             services.AddTransient<IAdapterEngine, AdapterEngine>();
 
