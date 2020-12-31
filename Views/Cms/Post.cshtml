@@ -1,4 +1,4 @@
-@model StandardPost
+﻿@model StandardPost
 @{
     ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
     var hasImage = Model.PrimaryImage.HasValue;
@@ -66,30 +66,28 @@
                         @Html.AntiForgeryToken()
                         @Html.Hidden("Id", Model.Id)
 
-                        <h3 class="mb-3">Leave a comment</h3>
+                        <h3 class="mb-3">نظرات و پيشنهادات</h3>
                         <p class="mb-4">
-                            Please note that we won't show your email to others, or use it for sending
-                            unwanted emails. We will only use it to render your Gravatar image and to
-                            validate you as a real person.
+                            می دانم تکراری است اما قسم می خورم از آدرس پست الکترونيکی مخاطبان به هيچ وجه سوء استفاده نشود. از اينکگه با ديده خطا پوش خود به اين  مجموعه مملو از کاستی ها می نگريد، سپاسگزارم
                         </p>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <input name="CommentAuthor" type="text" class="form-control" placeholder="Your name">
+                                    <input name="CommentAuthor" type="text" class="form-control" placeholder="نام" style="direction:rtl;text-align:right">
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <input name="CommentEmail" type="text" class="form-control" placeholder="Your email address">
+                                <input name="CommentEmail" type="text" class="form-control" placeholder="پست الکترونيک">
                             </div>
                         </div>
                         <div class="form-group">
                             <input name="CommentUrl" type="text" class="form-control" placeholder="An (optional) URL to your website">
                         </div>
                         <div class="form-group">
-                            <textarea name="CommentBody" rows="6" class="form-control" placeholder="Your awesome comment"></textarea>
+                            <textarea name="CommentBody" rows="6" class="form-control" placeholder="نظرات و ايده های شما" style="direction:rtl;text-align:right"></textarea>
                         </div>
                         <div class="form-group text-left">
-                            <button class="btn btn-success">Post Comment</button>
+                            <button class="btn btn-success">ثبت نظرات</button>
                         </div>
                     </form>
                 </div>

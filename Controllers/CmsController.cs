@@ -123,8 +123,8 @@ namespace MRBHub.Controllers
                     Body = commentModel.CommentBody
                 };
                 await _api.Posts.SaveCommentAndVerifyAsync(commentModel.Id, comment);
-
-                return Redirect(model.Permalink + "#comments");
+                var link = String.Format("/mrbdemo{0}#comments", model.Permalink);
+                return Redirect(String.Format("/mrbdemo/{0}", model.Slug));
             }
             catch (UnauthorizedAccessException)
             {

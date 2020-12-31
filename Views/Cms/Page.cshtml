@@ -1,4 +1,4 @@
-@model StandardPage
+﻿@model StandardPage
 @{
     ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
     var hasImage = Model.PrimaryImage.HasValue;
@@ -32,3 +32,43 @@
         </div>
     }
 </main>
+<div style="direction:ltr;padding-right:40px;padding-left:40px;background-color:lightgrey">
+    <p>فعلا فقط يک نسخه به عنوان Proof Of Concept و عملی بودن ايده استفاده از سرويس استاندارد آرشيو های ديجيتال. در اين جا فقط فيلد های محدودی از اين نسخه به همراه لينک تصاوير آن ارائه شد .</p>
+    @foreach (var title in Model.ItemInfo.TEI.TeiHeader.FileDesc.TitleStmt.Title)
+    {
+        <p>@title.Text</p>
+    }
+    @foreach (var author in Model.ItemInfo.TEI.TeiHeader.FileDesc.TitleStmt.Author.Name)
+    {
+        <p>@author.Text</p>
+    }
+    @foreach (var title in Model.ItemInfo.TEI.TeiHeader.FileDesc.SourceDesc.MsDesc.MsContents.MsItem.Title)
+    {
+        <p>@title.Text</p>
+    }
+    @foreach (var dimension in Model.ItemInfo.TEI.TeiHeader.FileDesc.SourceDesc.MsDesc.PhysDesc.ObjectDesc.SupportDesc.Extent.Dimensions)
+    {
+        <p>@dimension.Type &nbsp; @dimension.Height.Text &nbsp; @dimension.Height.Unit &nbsp; @dimension.Width.Text &nbsp; @dimension.Width.Unit</p>
+    }
+
+    @foreach (var surface in Model.ItemInfo.TEI.Facsimile.Surface)
+    {
+<ul>
+    @foreach (var imgLink in surface.Graphic)
+    {
+        var targetLink = String.Format("https://www.thedigitalwalters.org/Data/WaltersManuscripts/W808/data/W.808/{0}", imgLink.Url);
+        if(imgLink.Url.IndexOf("thumb")>-1)
+    {
+    <li><img src="@targetLink" alt="@imgLink.Url"/></li>
+    }
+    else
+    {
+    <li><a href="@targetLink" target="_blank">@imgLink.Url</a></li>
+    }
+
+    }
+</ul>
+    }
+
+
+</div>

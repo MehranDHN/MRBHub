@@ -1,18 +1,19 @@
-@model Piranha.Extend.Blocks.PostBlock
+﻿@model Piranha.Extend.Blocks.PostBlock
 
-@if (Model.Body.Post != null)
-{
-    <div class="card">
-        @if (Model.Body.Post.PrimaryImage.HasValue)
-        {
-            <a href="@WebApp.Url(Model)">
-                <img class="card-img-top" src="@Url.Content(WebApp.Media.ResizeImage(Model.Body.Post.PrimaryImage, 540, 200))">
-            </a>
-        }
-        <div class="card-body">
-            <h5>@Model.Body.Post.Title</h5>
-            <p>@Html.Raw(Model.Body.Post.Excerpt)</p>
-            <a href="@WebApp.Url(Model)" class="btn btn-sm btn-primary">Read more</a>
-        </div>
+
+    @if (Model.Body.Post != null)
+    {
+<div class="card">
+    @if (Model.Body.Post.PrimaryImage.HasValue)
+    {
+        <a href="@WebApp.Url(Model)">
+            <img class="card-img-top" src="@Url.Content(WebApp.Media.ResizeImage(Model.Body.Post.PrimaryImage, 540, 200))">
+        </a>
+    }
+    <div class="card-body" style="text-align:right">
+        <h5>@Model.Body.Post.Title</h5>
+        <p>@Html.Raw(Model.Body.Post.Excerpt)</p>
+        <a href="@String.Format("/mrbdemo{0}", WebApp.Url(Model))" class="btn btn-sm btn-primary">شرح پست</a>
     </div>
-}
+</div>
+    }

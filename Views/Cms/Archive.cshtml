@@ -1,4 +1,4 @@
-@model StandardArchive
+﻿@model StandardArchive
 @{
     ViewData["Title"] = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Title;
     var hasImage = Model.PrimaryImage.HasValue;
@@ -41,7 +41,7 @@
                 {
                     var post = Model.Archive.Posts[i];
 
-                    <div class="@(i == 0 ? "col-md-12" : "col-md-6")">
+                    <div class="@(i == 0 ? "col-md-12" : "col-md-6")" style="text-align:right">
                         <article>
                             <header>
                                 @if (post.PrimaryImage.HasValue)
@@ -53,10 +53,9 @@
                                 <h3>@post.Title</h3>
                                 <p class="post-meta">
                                     <span>
-                                        In <a href="@Model.Permalink/category/@post.Category.Slug">@post.Category.Title</a>
+                                        <a href="@Model.Permalink/category/@post.Category.Slug">@post.Category.Title</a>
                                     </span>
                                     <span>
-                                        Tags
                                         @foreach (var tag in post.Tags)
                                         {
                                             <a href="@Model.Permalink/tag/@tag.Slug">#@tag.Slug</a>
@@ -65,18 +64,18 @@
                                     @if (post.IsPublished)
                                     {
                                         <span>
-                                            Published @post.Published.Value.ToShortDateString()
+                                            @post.Published.Value.ToShortDateString()
                                         </span>
                                     }
                                     @if (post.EnableComments && post.CommentCount > 0)
                                     {
                                         <span>
-                                            <a href="@post.Permalink#comments">@post.CommentCount @(post.CommentCount == 1 ? "comment" : "comments")</a>
+                                            <a href="@post.Permalink#comments">@post.CommentCount @(post.CommentCount == 1 ? "نظر" : "نظر")</a>
                                         </span>
                                     }
                                 </p>
                                 <p>@Html.Raw(post.Excerpt)</p>
-                                <a href="@post.Permalink" class="btn btn-primary">Read more</a>
+                                <a href="@String.Format("/mrbdemo{0}", @post.Permalink)" class="btn btn-primary">شرح پست</a>
                             </header>
                         </article>
                     </div>

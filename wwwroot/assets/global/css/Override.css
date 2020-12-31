@@ -25,9 +25,11 @@ header .lead {
     text-align: right;
 }
 
-    .block h2,h3{
+    .block h2, h3 {
         font-family: IRsansb;
-        color:tomato;
+        color: tomato;
+        text-align: right;
+        direction:rtl;
     }
 h1 {
     font-family: IRsansb;
@@ -39,11 +41,15 @@ h4 {
     font-family: IRsansb;
     color: tomato;
 }
-.card-body a {
-    display:none;
-}
+
 p {
     font-family: IRsansb;
     direction:rtl;
     text-align:right;
+}
+.btn-primary {
+    color: #fff;
+    background-color: #007bff;
+    border-color: #007bff;
+    font-family:IRsansb;
 }

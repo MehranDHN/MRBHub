@@ -1,4 +1,4 @@
-@model Piranha.Extend.Blocks.PageBlock
+﻿@model Piranha.Extend.Blocks.PageBlock
 
 @if (Model.Body.Page != null)
 {
@@ -12,7 +12,7 @@
         <div class="card-body">
             <h5>@Model.Body.Page.Title</h5>
             <p>@Html.Raw(Model.Body.Page.Excerpt)</p>
-            <a href="@WebApp.Url(Model)" class="btn btn-sm btn-primary">Read more</a>
+            <a href="@String.Format("/mrbdemo{0}", WebApp.Url(Model))" class="btn btn-sm btn-primary">شرح پست</a>
         </div>
     </div>
 }

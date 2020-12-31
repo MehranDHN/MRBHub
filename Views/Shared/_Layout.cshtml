@@ -24,8 +24,16 @@
                 <ul class="navbar-nav ml-auto">
                     @foreach (var item in WebApp.Site.Sitemap.Where(i => !i.IsHidden))
                     {
+                      var surl = String.Format("/mrbdemo{0}", WebApp.Url(item)) ;
+                    if(item.MenuTitle.Equals("Docs"))
+                    {
+                        surl = WebApp.Url(item);
+                    }
                     <li class="nav-item@(item.Id == WebApp.PageId || item.HasChild(WebApp.PageId) ? " active" : "")">
-                        <a class="nav-link" href="@WebApp.Url(item)">@item.MenuTitle</a>
+
+                        <a class="nav-link" href="@surl">@item.MenuTitle</a>
+                        
+
                     </li>
                     }
                 </ul>
