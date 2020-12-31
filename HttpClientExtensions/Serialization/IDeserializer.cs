@@ -1,0 +1,9 @@
+﻿
+
+namespace MRBHub.Web.HttpClientExtensions.Serialization
+{
+    public interface IDeserializer
+    {
+        T Deserialize<T>(string json) where T : class;
+    }
+}
